@@ -33,6 +33,7 @@ Documentation = "https://api.relayshield.net/developers"
 
 [project.scripts]
 relayshield-mcp = "relayshield_mcp.server:main_sync"
+relayshield-free-mcp = "relayshield_free.server:main_sync"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/relayshield_mcp"]
+packages = ["src/relayshield_mcp", "src/relayshield_free"]
