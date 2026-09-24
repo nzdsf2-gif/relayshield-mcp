@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "relayshield-mcp"
-version = "0.2.11"
+version = "0.3.0"
 description = "MCP server for RelayShield — breach detection, SIM swap, domain lookalikes, OAuth watchlist, infostealer detection, URL/file scanning, MCP registry risk, and prompt-injection breach detection. Subscription (RapidAPI) and pay-as-you-go (x402 USDC on Base) access modes."
 readme = "README.md"
 license = { text = "MIT" }
@@ -33,6 +33,7 @@ Documentation = "https://api.relayshield.net/developers"
 
 [project.scripts]
 relayshield-mcp = "relayshield_mcp.server:main_sync"
+relayshield-free-mcp = "relayshield_free.server:main_sync"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/relayshield_mcp"]
+packages = ["src/relayshield_mcp", "src/relayshield_free"]

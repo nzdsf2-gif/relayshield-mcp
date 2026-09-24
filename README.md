@@ -96,6 +96,53 @@ claude mcp add relayshield \
   --env RELAYSHIELD_API_KEY=your-relayshield-api-key-here
 ```
 
+## Free checks server (no key, no signup)
+
+`relayshield-free-mcp` ships in the same package and exposes RelayShield's free,
+keyless threat-intel checks as four MCP tools. It is the funnel into the paid
+server above: every summary links the deeper paid checks where they apply.
+
+| Tool | What it does | Key needed |
+|---|---|---|
+| `check_link` | Screen 1–25 URLs for phishing/malware (IOC corpus + Safe Browsing + domain age) | no |
+| `check_wallet` | Screen a crypto wallet before paying it (chain auto-detected) | no |
+| `check_email` | Score a suspicious email for phishing signals; checks its links too | no |
+| `check_breach` | Email vs 13B+ breached accounts | partner key only |
+
+```bash
+pip install relayshield-mcp
+# or: uvx relayshield-mcp
+relayshield-free-mcp
+```
+
+**Claude Desktop** — add to `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "relayshield-free": {
+      "command": "relayshield-free-mcp",
+      "env": {
+        "RELAYSHIELD_API_URL": "https://api.relayshield.net",
+        "RS_SOURCE_TAG": "mcp-free-claude"
+      }
+    }
+  }
+}
+```
+
+**ChatGPT (developer mode)** — Settings → Connectors → Developer mode, add a new
+MCP server with command `relayshield-free-mcp` (install the package first with
+`pip install relayshield-mcp`), and set `RS_SOURCE_TAG=mcp-free-chatgpt` so
+usage is attributed to the ChatGPT channel. `check_breach` stays disabled until
+a partner key is set via `RELAYSHIELD_API_KEY`.
+
+**Partner keys** — distributors (Claude, ChatGPT, registries) each get their own
+RelayShield partner key with a per-key daily call cap, set via
+`RELAYSHIELD_API_KEY`. Separate keys per channel mean one channel's abuse never
+takes down the others, and `RS_SOURCE_TAG` attributes usage per channel. The
+server runs fine without any key — link, wallet, and email checks stay keyless
+on the free tier.
+
 ## Usage examples
 
 Once configured, ask Claude:
