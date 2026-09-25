@@ -152,12 +152,15 @@ TOOLS: dict[str, dict] = {
     "check_link": {
         "path": "/v1/link-check",
         "summary": _summarise_link,
+        "title": "Check links for phishing and malware",
         "description": (
-            "Check one link — or up to 25 at once — for known phishing, malware and scam abuse. "
-            "Free and keyless: no API key, no signup, no payment. Signals: RelayShield's criminal "
-            "IOC corpus, threat feeds, and domain registration age. "
-            "It never answers 'safe'; the best verdict is 'unknown' (nothing known against the domain). "
-            "Use before clicking, forwarding, or quoting a link, and to screen links inside a suspicious message."
+            "Checks one URL, or up to 25 URLs in a single call, against RelayShield's "
+            "threat-intelligence corpus for known phishing, malware, and scam abuse. "
+            "Provide either `url` (a single http:// or https:// link) or `urls` (an array "
+            "of up to 25 links). Returns a per-link verdict of FLAGGED or unknown with the "
+            "reasons behind each verdict, plus counts of checked, flagged, and incomplete "
+            "links. A verdict of unknown means nothing is known against the link; this "
+            "tool never reports a link as safe."
         ),
         "schema": {
             "type": "object",
@@ -180,13 +183,15 @@ TOOLS: dict[str, dict] = {
     "check_wallet": {
         "path": "/v1/wallet-risk",
         "summary": _summarise_wallet,
+        "title": "Check a crypto wallet for risk",
         "description": (
-            "Screen a crypto wallet address BEFORE sending funds to it. Free and keyless: no API key, "
-            "no signup, no payment. The chain (EVM, Solana, TON, Bitcoin) is detected from the address "
-            "format automatically. Returns a risk level (CRITICAL/HIGH/MEDIUM/LOW/unknown) with the "
-            "specific sanctions, scam, drainer and phishing flags behind it. "
-            "'unknown' means nothing is known against the address, not that it is safe. "
-            "Use whenever a user is about to pay an address they were given."
+            "Returns a read-only risk assessment of a cryptocurrency wallet address. "
+            "It never moves funds or initiates transactions. Provide `address`; the chain "
+            "(EVM, Solana, TON, or Bitcoin) is detected from the address format automatically. "
+            "Returns a risk level of CRITICAL, HIGH, MEDIUM, LOW, or unknown, with the "
+            "specific sanctions, scam, drainer, and phishing flags behind it. "
+            "A verdict of unknown means nothing is known against the address; "
+            "it does not mean the address is safe."
         ),
         "schema": {
             "type": "object",
@@ -203,14 +208,14 @@ TOOLS: dict[str, dict] = {
     "check_email": {
         "path": "/v1/email-check",
         "summary": _summarise_email,
+        "title": "Score an email for phishing signals",
         "description": (
-            "Score a suspicious email for phishing signals. Free and keyless: no API key, "
-            "no signup, no payment. Pass the fields you already parsed (subject, body text, "
-            "claimed sender, reply-to, links) — the endpoint returns a risk level, score, "
-            "and the specific flags behind it, and checks any links against RelayShield's "
-            "IOC corpus, threat feeds, and domain registration age. "
-            "It never answers 'safe'; the best verdict is 'unknown'. "
-            "Use on a suspicious message before acting on it."
+            "Scores a suspicious email for phishing signals from its parsed fields. "
+            "Provide any of: from_address, from_name, reply_to, return_path, subject, "
+            "body_text, and links (up to 25). Returns a risk level and score with the "
+            "specific flags behind them; links in the email are also checked against "
+            "RelayShield's threat-intelligence corpus. A verdict of unknown means nothing "
+            "conclusive was found; this tool never reports an email as safe."
         ),
         "schema": {
             "type": "object",
@@ -263,12 +268,14 @@ TOOLS: dict[str, dict] = {
         "path": "/v1/metered/breach",
         "requires_key": True,
         "summary": _summarise_breach,
+        "title": "Check an email against known data breaches",
         "description": (
-            "Check whether an email address appears in known data breaches — 13B+ records. "
-            "Needs a RelayShield partner API key (set RELAYSHIELD_API_KEY); without one the "
-            "tool explains how to get set up instead of failing. Returns the breach count "
-            "with the named sources behind it. Use when vetting an identity, a new account, "
-            "or credentials that may have been exposed."
+            "Checks whether an email address appears in known data breaches. Provide "
+            "`email`. Returns the number of breaches found with the named sources behind "
+            "each; a count of zero means no breaches were found in the corpus, not that "
+            "the address is safe. Read-only: it only looks up breach records. Requires the "
+            "RELAYSHIELD_API_KEY environment variable; without it, the tool returns setup "
+            "instructions instead of calling the API."
         ),
         "schema": {
             "type": "object",
@@ -289,7 +296,13 @@ TOOLS: dict[str, dict] = {
 @app.list_tools()
 async def list_tools() -> list[types.Tool]:
     return [
-        types.Tool(name=name, description=spec["description"], inputSchema=spec["schema"])
+        types.Tool(
+            name=name,
+            title=spec["title"],
+            description=spec["description"],
+            inputSchema=spec["schema"],
+            annotations=types.ToolAnnotations(title=spec["title"], readOnlyHint=True),
+        )
         for name, spec in TOOLS.items()
     ]
 

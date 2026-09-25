@@ -1,0 +1,70 @@
+{
+  "author": {
+    "email": "support@relayshield.net",
+    "name": "RelayShield",
+    "url": "https://relayshield.net"
+  },
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ]
+  },
+  "description": "Free threat-intelligence checks for Claude: screen links for phishing and malware, assess crypto wallet risk, score suspicious emails, and look up data breaches. Link, wallet, and email checks need no API key.",
+  "display_name": "RelayShield Free Identity & Scam Checks",
+  "homepage": "https://relayshield.net",
+  "license": "MIT",
+  "manifest_version": "0.3",
+  "name": "io.github.nzdsf2-gif/relayshield-free-mcp",
+  "privacy_policies": [
+    "https://privacy.relayshield.net/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nzdsf2-gif/relayshield-mcp"
+  },
+  "server": {
+    "entry_point": "src/relayshield_free/server.py",
+    "mcp_config": {
+      "args": [
+        "${__dirname}/src/relayshield_free/server.py"
+      ],
+      "command": "python",
+      "env": {
+        "RELAYSHIELD_API_KEY": "${user_config.relayshield_api_key}",
+        "RELAYSHIELD_API_URL": "https://api.relayshield.net",
+        "RS_SOURCE_TAG": "mcp-free-claude-marketplace"
+      }
+    },
+    "type": "python"
+  },
+  "tools": [
+    {
+      "description": "Checks one URL, or up to 25 URLs in a single call, against RelayShield's threat-intelligence corpus for known phishing, malware, and scam abuse.",
+      "name": "check_link"
+    },
+    {
+      "description": "Returns a read-only risk assessment of a cryptocurrency wallet address. It never moves funds or initiates transactions.",
+      "name": "check_wallet"
+    },
+    {
+      "description": "Scores a suspicious email for phishing signals from its parsed fields.",
+      "name": "check_email"
+    },
+    {
+      "description": "Checks whether an email address appears in known data breaches. Read-only: it only looks up breach records.",
+      "name": "check_breach"
+    }
+  ],
+  "user_config": {
+    "relayshield_api_key": {
+      "description": "Enables the breach-check tool. Leave empty to use the link, wallet, and email checks keyless.",
+      "required": false,
+      "sensitive": true,
+      "title": "RelayShield partner API key (optional)",
+      "type": "string"
+    }
+  },
+  "version": "0.3.0"
+}

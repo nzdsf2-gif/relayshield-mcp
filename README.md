@@ -145,6 +145,29 @@ takes down the others, and `RS_SOURCE_TAG` attributes usage per channel. The
 server runs fine without any key — link, wallet, and email checks stay keyless
 on the free tier.
 
+## Privacy Policy
+
+The free server is read-only: it forwards your check requests (URLs, wallet
+addresses, email fields, or an email address for breach lookup) to RelayShield's
+API at `https://api.relayshield.net` and returns the verdict. It never moves funds,
+never initiates transactions, and stores nothing on your machine.
+
+- **Collected:** the content you submit to a tool, plus standard request metadata
+  (timestamp, tool used, channel label, IP address) for rate limiting, abuse
+  prevention, and per-channel usage measurement.
+- **Use:** solely to run your checks and operate the service. No model training,
+  no advertising profiles.
+- **Sharing:** we do not sell data or share it with advertisers or data brokers;
+  check content is processed on RelayShield's own infrastructure.
+- **Retention:** check content up to 90 days; request metadata up to 12 months
+  (confirm periods before the policy is published).
+- **Rights & contact:** request access, correction, or deletion at
+  **support@relayshield.net**.
+
+Full text: [PRIVACY.md](PRIVACY.md). The hosted policy URL (required for directory
+listing) is not live yet — `manifest.json` carries the placeholder
+`https://www.relayshield.net/privacy` until the real page is published.
+
 ## Usage examples
 
 Once configured, ask Claude:
