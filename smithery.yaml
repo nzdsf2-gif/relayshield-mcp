@@ -1,71 +1,61 @@
-# Copy this to the ROOT of the MCP server's own repository (~/mcp-live), not here.
-# Smithery reads it from the repo it is listing.
+# Smithery configuration for the FREE RelayShield MCP server.
 #
-# CORRECTED 2026-09-05. The previous version of this file described a DIFFERENT
-# SERVER and copying it would have made the listing worse, not better:
-#   * it ran `node dist/index.js`, but relayshield-mcp is a PYTHON package on
-#     PyPI. That command cannot start it.
-#   * it listed four tools named `relayshield_check_wallet` and similar. The
-#     server actually serves sixteen, named `check_breach`, `scan_url` and so on.
-#   * it made the API key REQUIRED. The server runs keyless in discovery mode,
-#     and requiring a key stops anyone trying it, which is the whole point of a
-#     directory listing.
-# Written before the server was published to PyPI, never reconciled with it, and
-# caught only because the tool names were checked against a live handshake.
+# Smithery reads this from the repo it is listing. This file describes
+# `relayshield-free-mcp` — the keyless free-check server (URL, wallet, email
+# and breach checks) — NOT the paid `relayshield-mcp` subscription server.
+# The paid server keeps its own listing; do not merge the two configs.
 
-name: relayshield
-displayName: RelayShield
+name: relayshield-free-mcp
+displayName: RelayShield Free Scam Checks
 description: >-
-  Screen what an agent is about to trust. Breach, SIM-swap, infostealer,
-  domain-lookalike, OAuth-watchlist and MCP-registry-risk checks, plus URL,
-  file and wallet scanning, against identity-compromise and criminal-source
-  threat intelligence.
-homepage: https://api.relayshield.net/developers?source=mcp-registry
+  Free, no-signup scam checks for AI agents: screen URLs for phishing/malware,
+  screen crypto wallets before paying them, score suspicious emails, and check
+  emails against breach data — all against RelayShield's threat-intelligence
+  corpus. Keyless; nothing is required to start.
+homepage: https://api.relayshield.net/developers?source=smithery
 license: MIT
 
 startCommand:
   type: stdio
   configSchema:
     type: object
-    # NOTHING is required. The server answers keyless with its payment
-    # requirements, which is a usable discovery mode rather than an error, so a
-    # listing that demands a key before the first call would block every trial.
+    # NOTHING is required. check_link, check_wallet and check_email run keyless
+    # on the free tier. check_breach needs a RelayShield partner key; without
+    # one it returns setup guidance instead of failing.
     properties:
       relayshieldApiKey:
         type: string
-        title: RelayShield API key (optional)
+        title: RelayShield partner key (optional)
         description: >-
-          Optional. Free tier at api.relayshield.net/developers. Sent as the
-          x-api-key header. Never logged and never returned in a tool response.
-          Without it the server still starts and returns pricing.
+          Optional partner key for check_breach. Distributors get their own key
+          with a per-key daily cap — one channel's abuse never takes down the
+          others. Never logged and never returned in a tool response.
+      rsSourceTag:
+        type: string
+        title: Channel attribution tag (optional)
+        description: >-
+          Label recorded by the API so per-channel usage can be measured.
+          Defaults to "smithery".
+        default: smithery
   # uvx resolves and runs the published console script in its own environment,
-  # so the only prerequisite is uv. The >=0.2.10 floor is load-bearing: 0.2.9 and
-  # earlier declare `mcp` with no upper bound, resolve mcp 2.x and die at import.
+  # so the only prerequisite is uv. The >=0.3.0 floor is load-bearing: earlier
+  # versions do not ship the relayshield-free-mcp console script.
   commandFunction: |
     (config) => ({
       command: 'uvx',
-      args: ['--from', 'relayshield-mcp>=0.2.10', 'relayshield-mcp'],
-      env: config.relayshieldApiKey
-        ? { RELAYSHIELD_API_KEY: config.relayshieldApiKey }
-        : {}
+      args: ['--from', 'relayshield-mcp>=0.3.0', 'relayshield-free-mcp'],
+      env: {
+        ...(config.relayshieldApiKey
+          ? { RELAYSHIELD_API_KEY: config.relayshieldApiKey }
+          : {}),
+        RS_SOURCE_TAG: config.rsSourceTag || 'smithery',
+      }
     })
 
-# The sixteen tools the published 0.2.11 actually serves, taken from a live
-# initialize/tools-list handshake rather than from memory.
+# The four tools the published 0.3.0 free server actually serves, taken from a
+# live initialize/tools-list handshake rather than from memory.
 tools:
+  - check_link
+  - check_wallet
+  - check_email
   - check_breach
-  - check_sim_swap
-  - check_domain_lookalikes
-  - check_oauth_watchlist
-  - check_infostealer
-  - scan_url
-  - scan_file
-  - scan_wallet
-  - check_mcp_registry_risk
-  - check_prompt_injection_breach
-  - check_supply_chain
-  - check_session_risk
-  - check_nhi_exposure
-  - check_secret_scan
-  - check_llm_credential_exposure
-  - check_scan_result

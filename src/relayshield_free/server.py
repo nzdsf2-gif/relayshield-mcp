@@ -78,7 +78,7 @@ def _summarise_link(data: dict) -> str:
             lines.append(f"- {reason}")
         sig = data.get("signals", {})
         lines.append(
-            "Signals: IOC corpus={} | Safe Browsing={} | domain age={}d".format(
+            "Signals: IOC corpus={} | threat feeds={} | domain age={}d".format(
                 sig.get("ioc_corpus"), sig.get("safe_browsing"), sig.get("domain_age_days")
             )
         )
@@ -155,7 +155,7 @@ TOOLS: dict[str, dict] = {
         "description": (
             "Check one link — or up to 25 at once — for known phishing, malware and scam abuse. "
             "Free and keyless: no API key, no signup, no payment. Signals: RelayShield's criminal "
-            "IOC corpus, Google Safe Browsing, and domain registration age. "
+            "IOC corpus, threat feeds, and domain registration age. "
             "It never answers 'safe'; the best verdict is 'unknown' (nothing known against the domain). "
             "Use before clicking, forwarding, or quoting a link, and to screen links inside a suspicious message."
         ),
@@ -208,7 +208,7 @@ TOOLS: dict[str, dict] = {
             "no signup, no payment. Pass the fields you already parsed (subject, body text, "
             "claimed sender, reply-to, links) — the endpoint returns a risk level, score, "
             "and the specific flags behind it, and checks any links against RelayShield's "
-            "IOC corpus, Google Safe Browsing, and domain registration age. "
+            "IOC corpus, threat feeds, and domain registration age. "
             "It never answers 'safe'; the best verdict is 'unknown'. "
             "Use on a suspicious message before acting on it."
         ),

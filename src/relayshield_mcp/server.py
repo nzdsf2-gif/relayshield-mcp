@@ -85,7 +85,7 @@ async def list_tools() -> list[types.Tool]:
             name="check_breach",
             description=(
                 "Check whether an email address appears in known data breaches. "
-                "Uses Have I Been Pwned (HIBP) — 13 billion+ compromised accounts. "
+                "Draws on 13 billion+ compromised accounts. "
                 "Returns breach count and details (breach name, date, exposed data classes). "
                 "Use before allowing high-risk actions that depend on credential integrity. "
                 "Pay-as-you-go: $0.10 USDC per check (x402 on Base). "
@@ -178,11 +178,11 @@ async def list_tools() -> list[types.Tool]:
             name="check_infostealer",
             description=(
                 "Check whether an email address appears in infostealer malware logs. "
-                "Uses Hudson Rock Cavalier — a database of credentials harvested directly from "
+                "Draws on a database of credentials harvested directly from "
                 "infected computers by infostealer malware (RedLine, Raccoon, Vidar, etc.). "
                 "Returns found (bool), stealer count, and per-infection details: date compromised, "
                 "operating system, malware path, and number of corporate/personal credentials stolen. "
-                "Unlike breach databases (HIBP), infostealer hits mean the device itself was "
+                "Unlike breach databases, infostealer hits mean the device itself was "
                 "compromised — all stored passwords, session cookies, and crypto keys are at risk. "
                 "Pay-as-you-go: $0.15 USDC per check (x402 on Base). "
                 "Subscription: rapidapi.com/relayshield"
@@ -253,10 +253,10 @@ async def list_tools() -> list[types.Tool]:
         types.Tool(
             name="scan_wallet",
             description=(
-                "Check an EVM wallet address for on-chain risk signals using GoPlus Security. "
+                "Check an EVM wallet address for on-chain risk signals. "
                 "Detects blacklisted addresses, contract risk flags, malicious activity, "
                 "phishing associations, and other on-chain threat indicators. "
-                "Returns risk_level (LOW/MEDIUM/HIGH), risk_flags list, and raw GoPlus data. "
+                "Returns risk_level (LOW/MEDIUM/HIGH), risk_flags list, and raw on-chain data. "
                 "Supports Ethereum mainnet (default) and other EVM chains via chain_id. "
                 "Use before sending funds to an unknown address or in DeFi due-diligence flows. "
                 "Pay-as-you-go: $0.10 USDC per scan (x402 on Base). "

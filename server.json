@@ -3,7 +3,7 @@
   "name": "io.github.nzdsf2-gif/relayshield-mcp",
   "title": "RelayShield Security Intelligence",
   "description": "Breach, SIM swap, infostealer, domain lookalikes, MCP registry risk, prompt-injection detection.",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "websiteUrl": "https://relayshield.net",
   "repository": {
     "url": "https://github.com/relayshield/relayshield-mcp",
@@ -13,7 +13,7 @@
     {
       "registryType": "pypi",
       "identifier": "relayshield-mcp",
-      "version": "0.2.11",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       },

@@ -10,12 +10,12 @@
 
 | Tool | What it does | PAYG price |
 |---|---|---|
-| `check_breach` | Email breach lookup — 13 billion+ records via HIBP | $0.10 USDC |
+| `check_breach` | Email breach lookup — 13 billion+ compromised-account records | $0.10 USDC |
 | `check_sim_swap` | SIM swap / eSIM detection via live carrier data | $0.25 USDC |
 | `check_domain_lookalikes` | Typosquat and lookalike domain detection with cert transparency | $0.50 USDC |
-| `check_oauth_watchlist` | OAuth-app breach + stolen-token exposure via HIBP + stealer-log corpus | $0.30 USDC |
-| `check_infostealer` | Infostealer malware log lookup via Hudson Rock Cavalier | $0.15 USDC |
-| `scan_wallet` | EVM wallet on-chain risk check via GoPlus Security | $0.10 USDC |
+| `check_oauth_watchlist` | OAuth-app breach + stolen-token exposure from the stealer-log corpus | $0.30 USDC |
+| `check_infostealer` | Infostealer malware log lookup — credentials harvested from infected devices | $0.15 USDC |
+| `scan_wallet` | EVM wallet on-chain risk check | $0.10 USDC |
 | `scan_url` | URL malware/phishing scan across 70+ engines (async) | $0.05 USDC |
 | `scan_file` | Binary malware scan across 70+ AV engines (async) | $0.10 USDC |
 | `check_scan_result` | Poll for verdict after `scan_url` / `scan_file` | free |
@@ -104,7 +104,7 @@ server above: every summary links the deeper paid checks where they apply.
 
 | Tool | What it does | Key needed |
 |---|---|---|
-| `check_link` | Screen 1–25 URLs for phishing/malware (IOC corpus + Safe Browsing + domain age) | no |
+| `check_link` | Screen 1–25 URLs for phishing/malware (IOC corpus + threat feeds + domain age) | no |
 | `check_wallet` | Screen a crypto wallet before paying it (chain auto-detected) | no |
 | `check_email` | Score a suspicious email for phishing signals; checks its links too | no |
 | `check_breach` | Email vs 13B+ breached accounts | partner key only |
@@ -130,11 +130,13 @@ relayshield-free-mcp
 }
 ```
 
-**ChatGPT (developer mode)** — Settings → Connectors → Developer mode, add a new
-MCP server with command `relayshield-free-mcp` (install the package first with
-`pip install relayshield-mcp`), and set `RS_SOURCE_TAG=mcp-free-chatgpt` so
-usage is attributed to the ChatGPT channel. `check_breach` stays disabled until
-a partner key is set via `RELAYSHIELD_API_KEY`.
+**ChatGPT** — ChatGPT connects to MCP servers through Developer Mode
+connectors, which require a remote HTTP endpoint; it does not launch a local
+stdio server. A hosted RelayShield MCP endpoint is planned — until then, use
+Claude Desktop, Claude Code, Cursor, or any other stdio-capable MCP client.
+Set `RS_SOURCE_TAG=mcp-free-chatgpt` once the hosted endpoint is live so usage
+is attributed to the ChatGPT channel. `check_breach` stays disabled until a
+partner key is set via `RELAYSHIELD_API_KEY`.
 
 **Partner keys** — distributors (Claude, ChatGPT, registries) each get their own
 RelayShield partner key with a per-key daily call cap, set via
@@ -184,3 +186,5 @@ Set `RELAYSHIELD_API_KEY` **or** `RELAYSHIELD_X_PAYMENT` — not both. API key t
 - [Landing page](https://relayshield.net)
 - [Get an API key](https://api.relayshield.net/developers)
 - [GitHub](https://github.com/relayshield/relayshield-mcp)
+- [Telegram bot / miniApp](https://t.me/relayshield_bot) — free scam checks in chat
+- [WhatsApp scam-check bot](https://wa.me/17407373961) — message a link, wallet, or email

@@ -8,11 +8,11 @@ GAME agent can check identity threats before acting on user input, executing
 transactions, or processing links and files.
 
 Tools:
-  check_breach            — email breach lookup (HIBP, $0.10 USDC)
+  check_breach            — email breach lookup (13B+ records, $0.10 USDC)
   check_sim_swap          — SIM swap / eSIM detection ($0.25 USDC)
   check_domain_lookalikes — typosquat / phishing domain scan ($0.50 USDC)
   check_oauth_watchlist   — breached OAuth app exposure ($0.15 USDC)
-  scan_wallet             — on-chain wallet risk via GoPlus ($0.10 USDC)
+  scan_wallet             — on-chain wallet risk ($0.10 USDC)
   scan_url                — malware / phishing URL scan ($0.05 USDC)
   scan_file               — binary malware scan, 70+ AV engines ($0.10 USDC)
   check_scan_result       — poll async scan result (free)
@@ -153,7 +153,7 @@ relayshield_functions: list[Function] = [
         fn_name="check_breach",
         fn_description=(
             "Check whether an email address appears in known data breaches. "
-            "Uses Have I Been Pwned (13B+ compromised accounts). "
+            "Draws on 13B+ compromised accounts. "
             "Call before high-risk actions that depend on credential integrity. "
             "Pay-as-you-go: $0.10 USDC on Base via x402."
         ),
@@ -226,7 +226,7 @@ relayshield_functions: list[Function] = [
     Function(
         fn_name="scan_wallet",
         fn_description=(
-            "Check an EVM wallet address for on-chain risk signals using GoPlus Security. "
+            "Check an EVM wallet address for on-chain risk signals. "
             "Detects blacklisted addresses, malicious activity, phishing associations, and contract risk. "
             "Returns risk_level (LOW/MEDIUM/HIGH) and risk_flags. "
             "Pay-as-you-go: $0.10 USDC on Base via x402."
